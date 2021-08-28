@@ -1,12 +1,7 @@
+import { View } from "./View.js";
 import { NegotiationsRepository } from "../repositories/NegotiationsRepository.js";
 
-export class NegotiationsView {
-  private element: HTMLElement;
-
-  constructor(selector: string) {
-    this.element = document.querySelector(selector);
-  }
-
+export class NegotiationsView extends View<NegotiationsRepository> {
   public template(negotiationsRepository: NegotiationsRepository): string {
     return `
       <table class="table table-hover table-bordered">
@@ -28,9 +23,5 @@ export class NegotiationsView {
         </tbody>
       </table>
     `;
-  }
-
-  public update(negotiationsRepository: NegotiationsRepository): void {
-    this.element.innerHTML = this.template(negotiationsRepository);
   }
 }
