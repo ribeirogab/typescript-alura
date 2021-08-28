@@ -2,7 +2,7 @@ import { View } from "./View.js";
 import { NegotiationsRepository } from "../repositories/NegotiationsRepository.js";
 
 export class NegotiationsView extends View<NegotiationsRepository> {
-  public template(negotiationsRepository: NegotiationsRepository): string {
+  protected template(negotiationsRepository: NegotiationsRepository): string {
     return `
       <table class="table table-hover table-bordered">
         <thead>

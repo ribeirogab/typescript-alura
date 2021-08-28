@@ -18,9 +18,20 @@ export class NegotiationController {
     this.inputValue = document.querySelector("#valor");
 
     this.negotiationsView.update(this.negotiationsRepository);
+
+    this.inputDate.value = new Date()
+      .toLocaleDateString("pt-BR")
+      .split("/")
+      .reverse()
+      .join("-");
   }
 
-  public createNegotiation() {
+  private updateViews() {
+    this.negotiationsView.update(this.negotiationsRepository);
+    this.messageView.update("Negociação adicionada com sucesso!");
+  }
+
+  private createNegotiation() {
     const date = new Date(this.inputDate.value.replace(/-/g, ","));
     const amount = parseInt(this.inputAmount.value);
     const value = Number(this.inputValue.value);
@@ -30,20 +41,21 @@ export class NegotiationController {
     return negotiation;
   }
 
-  public add(): void {
-    const negotiation = this.createNegotiation();
-
-    this.negotiationsRepository.add(negotiation);
-    this.negotiationsView.update(this.negotiationsRepository);
-
-    this.messageView.update("Negociação adicionada com sucesso!");
-    
-    this.cleanForm();
-  }
-
-  public cleanForm(): void {
+  private cleanForm(): void {
     this.inputDate.value = "";
     this.inputAmount.value = "";
     this.inputValue.value = "";
+  }
+
+  public add(): void {
+    try {
+      const negotiation = this.createNegotiation();
+      this.negotiationsRepository.add(negotiation);
+
+      this.cleanForm();
+      this.updateViews();
+    } catch (error) {
+      this.messageView.update(error.message);
+    }
   }
 }
