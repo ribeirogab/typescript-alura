@@ -6,14 +6,17 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "lite-server --baseDir=dist",
-    "start": "concurrently \"npm run watch\" \"npm run server\""
+    "start": "concurrently \"yarn watch\" \"yarn server\"",
+    "compile": "tsc",
+    "watch": "tsc -w"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^6.0.0",
     "cz-conventional-changelog": "3.3.0",
-    "lite-server": "^2.6.1"
+    "lite-server": "^2.6.1",
+    "typescript": "^4.4.2"
   },
   "config": {
     "commitizen": {
