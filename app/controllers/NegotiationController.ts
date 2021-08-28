@@ -1,9 +1,12 @@
 import { Negotiation } from "../models/Negotiation.js";
+import { NegotiationsRepository } from "../repositories/NegotiationsRepository.js";
 
 export class NegotiationController {
   private inputDate: HTMLInputElement;
   private inputAmount: HTMLInputElement;
   private inputValue: HTMLInputElement;
+
+  private negotiationsRepository = new NegotiationsRepository();
 
   constructor() {
     this.inputDate = document.querySelector("#data");
@@ -23,7 +26,11 @@ export class NegotiationController {
 
   public add(): void {
     const negotiation = this.createNegotiation();
-    console.log(negotiation);
+
+    this.negotiationsRepository.add(negotiation);
+
+    console.log(this.negotiationsRepository.list());
+
     this.cleanForm();
   }
 
