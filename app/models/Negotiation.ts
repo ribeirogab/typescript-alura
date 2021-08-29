@@ -28,4 +28,16 @@ export class Negotiation {
   public get volume() {
     return this.value * this.amount;
   }
+
+  public static create(
+    dateString: string,
+    amountString: string,
+    valueString: string
+  ): Negotiation {
+    const date = new Date(dateString.replace(/-/g, ","));
+    const amount = parseInt(amountString);
+    const value = Number(valueString);
+
+    return new Negotiation(date, amount, value);
+  }
 }

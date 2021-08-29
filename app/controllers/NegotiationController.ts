@@ -13,32 +13,42 @@ export class NegotiationController {
   private messageView = new MessageView("#mensagemView");
 
   constructor() {
-    this.inputDate = document.querySelector("#data");
-    this.inputAmount = document.querySelector("#quantidade");
-    this.inputValue = document.querySelector("#valor");
+    const inputDate = document.querySelector("#data");
+    const inputAmount = document.querySelector("#quantidade");
+    const inputValue = document.querySelector("#valor");
 
-    this.negotiationsView.update(this.negotiationsRepository);
+    if (!inputDate || !inputAmount || !inputValue) {
+      throw new Error(`
+        ${
+          !inputDate ? 'Nenhum elemento encontrado com o seletor "#data"\n' : ""
+        }
+        ${
+          !inputAmount
+            ? 'Nenhum elemento encontrado com o seletor "#quantidade"\n'
+            : ""
+        }
+        ${
+          !inputValue ? 'Nenhum elemento encontrado com o seletor "#valor"' : ""
+        }
+      `);
+    }
+
+    this.inputDate = inputDate as HTMLInputElement;
+    this.inputAmount = inputAmount as HTMLInputElement;
+    this.inputValue = inputValue as HTMLInputElement;
 
     this.inputDate.value = new Date()
       .toLocaleDateString("pt-BR")
       .split("/")
       .reverse()
       .join("-");
+
+    this.negotiationsView.update(this.negotiationsRepository);
   }
 
   private updateViews() {
     this.negotiationsView.update(this.negotiationsRepository);
     this.messageView.update("Negociação adicionada com sucesso!");
-  }
-
-  private createNegotiation() {
-    const date = new Date(this.inputDate.value.replace(/-/g, ","));
-    const amount = parseInt(this.inputAmount.value);
-    const value = Number(this.inputValue.value);
-
-    const negotiation = new Negotiation(date, amount, value);
-
-    return negotiation;
   }
 
   private cleanForm(): void {
@@ -49,7 +59,12 @@ export class NegotiationController {
 
   public add(): void {
     try {
-      const negotiation = this.createNegotiation();
+      const negotiation = Negotiation.create(
+        this.inputDate.value,
+        this.inputAmount.value,
+        this.inputValue.value
+      );
+
       this.negotiationsRepository.add(negotiation);
 
       this.cleanForm();
