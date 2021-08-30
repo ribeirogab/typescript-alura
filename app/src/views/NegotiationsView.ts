@@ -1,7 +1,9 @@
 import { View } from "./View.js";
 import { NegotiationsRepository } from "../repositories/NegotiationsRepository.js";
+import { scape } from "../decorators/scape.js";
 
 export class NegotiationsView extends View<NegotiationsRepository> {
+  @scape()
   protected template(negotiationsRepository: NegotiationsRepository): string {
     return `
       <table class="table table-hover table-bordered">

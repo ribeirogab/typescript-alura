@@ -1,3 +1,4 @@
+import { runtimeLogger } from "../decorators/runtimeLogger.js";
 import { Negotiation } from "../models/Negotiation.js";
 import { NegotiationsRepository } from "../repositories/NegotiationsRepository.js";
 import { MessageView } from "../views/MessageView.js";
@@ -57,6 +58,7 @@ export class NegotiationController {
     this.inputValue.value = "";
   }
 
+  @runtimeLogger()
   public add(): void {
     try {
       const negotiation = Negotiation.create(

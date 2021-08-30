@@ -1,7 +1,11 @@
+import { inspect } from "../decorators/inspect.js";
+import { runtimeLogger } from "../decorators/runtimeLogger.js";
+import { scape } from "../decorators/scape.js";
+
 export abstract class View<T> {
   protected element: Element;
 
-  constructor(selector: string, private scape: boolean = false) {
+  constructor(selector: string) {
     const element = document.querySelector(selector);
 
     if (!element) {
@@ -13,13 +17,11 @@ export abstract class View<T> {
 
   protected abstract template(model: T): string;
 
+  @runtimeLogger(true)
+  @inspect()
+  @scape()
   public update(model: T): void {
     let template = this.template(model);
-
-    if (this.scape) {
-      template = template.replace(/<script>[\s\S]*?<\/script>/g, "");
-    }
-
     this.element.innerHTML = template;
   }
 }
